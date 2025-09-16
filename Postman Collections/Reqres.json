@@ -970,7 +970,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "8f451f98-898f-4ff6-a64e-ae3cea564424",
+				"id": "1fc5aa98-3395-4a4a-b020-ab3826fb4462",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -981,7 +981,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "3fc7bb07-9aab-4d9d-9322-4a05eb016228",
+				"id": "d8c7990d-eba4-468a-a9ca-572953728d32",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -993,39 +993,28 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": ""
+			"value": "https://reqres.in/api"
 		},
 		{
 			"key": "key",
-			"value": ""
+			"value": "reqres-free-v1",
+			"disabled": true
 		},
 		{
 			"key": "page_number",
-			"value": ""
+			"value": "2"
 		},
 		{
 			"key": "per_page",
-			"value": ""
+			"value": "6"
 		},
 		{
 			"key": "id",
-			"value": ""
-		},
-		{
-			"key": "new_id",
-			"value": ""
+			"value": "2"
 		},
 		{
 			"key": "invalid_key",
-			"value": ""
-		},
-		{
-			"key": "registered_Id",
-			"value": ""
-		},
-		{
-			"key": "registered_Token",
-			"value": ""
+			"value": "reqres-free"
 		}
 	]
 }
