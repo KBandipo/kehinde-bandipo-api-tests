@@ -970,7 +970,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "1fc5aa98-3395-4a4a-b020-ab3826fb4462",
+				"id": "61a2e67a-effa-46a8-a88e-f39a7c36caf9",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -981,7 +981,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "d8c7990d-eba4-468a-a9ca-572953728d32",
+				"id": "b58da063-55ef-4208-ab9b-189270125550",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -997,8 +997,7 @@
 		},
 		{
 			"key": "key",
-			"value": "reqres-free-v1",
-			"disabled": true
+			"value": "reqres-free-v1"
 		},
 		{
 			"key": "page_number",
@@ -1015,6 +1014,18 @@
 		{
 			"key": "invalid_key",
 			"value": "reqres-free"
+		},
+		{
+			"key": "registered_Id",
+			"value": ""
+		},
+		{
+			"key": "registered_Token",
+			"value": ""
+		},
+		{
+			"key": "new_id",
+			"value": ""
 		}
 	]
 }
