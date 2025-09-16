@@ -1,0 +1,1031 @@
+{
+	"info": {
+		"_postman_id": "3a667fee-7dd2-4b1b-8240-84cc9352d39c",
+		"name": "Reqres",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Happy  path",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"registered_Id\", jsonData.id);\r",
+									"pm.collectionVariables.set(\"registered_Token\", jsonData.token);\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"token\");\r",
+									"    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.token).to.be.a(\"string\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "2f2af331-9447-4028-9e8a-52d68b2ecb99",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "List Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "be84b475-3cab-467a-bb44-d09f96d3f119",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const page_number = parseInt(pm.collectionVariables.get(\"page_number\"));\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"pm.test(\"Response should be an object\", ()=> {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Page number is correct\", ()=> {\r",
+									"    pm.expect(jsonData.page).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.page).to.eql(page_number);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Per_page should be a number\", ()=> {\r",
+									"    pm.expect(jsonData.per_page).to.be.a(\"number\");\r",
+									"})\r",
+									"pm.test(\"Total should be a number\", () => {\r",
+									"    pm.expect(jsonData.total).to.be.a(\"number\");\r",
+									"});\r",
+									"pm.test(\"Total_pages should be a number\", () => {\r",
+									"    pm.expect(jsonData.total_pages).to.be.a(\"number\");\r",
+									"});\r",
+									"pm.test(\"Data should be an array\", () => {\r",
+									"    pm.expect(jsonData.data).to.be.an(\"array\");\r",
+									"});\r",
+									"pm.test(\"Response should have data\", () => {\r",
+									"    pm.expect(jsonData.data).to.not.be.empty;\r",
+									"})\r",
+									"pm.test(\"Data should be a object\", ()=> {\r",
+									"    pm.expect(jsonData.data[0]).to.be.an(\"object\");\r",
+									"})\r",
+									"pm.test(\"Data should have id, email, first_name, last_name, avatar\", () => {\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"email\");\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"first_name\");\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"last_name\");\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"avatar\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data id, email, first_name, last_name, avatar should have correct data types\", () => {\r",
+									"    pm.expect(jsonData.data[0].id).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.data[0].email).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].first_name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].last_name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].avatar).to.be.a(\"string\");\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "9630081e-f9c9-43a8-91e5-902e293943db",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users?page={{page_number}}&per_page=6",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "{{page_number}}"
+								},
+								{
+									"key": "per_page",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"new_id\", jsonData.id);\r",
+									"const req = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", ()=> {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"pm.test(\"Status message is Created\", ()=> {\r",
+									"    pm.response.to.have.status(\"Created\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"pm.test(\"Response should be an object\", ()=> {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"\r",
+									"})\r",
+									"pm.test(\"Response should not be empty\", () => {\r",
+									"    pm.expect(jsonData).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"    pm.expect(jsonData).to.have.property(\"email\");\r",
+									"    pm.expect(jsonData).to.have.property(\"password\");\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"createdAt\");\r",
+									"    pm.expect(jsonData.email).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.password).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.id).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.createdAt).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the user creation logic\", () => {\r",
+									"    pm.expect(jsonData.email).to.equal(req.email);\r",
+									"    pm.expect(jsonData.password).to.equal(req.password);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "77008c4d-4b16-4595-b637-30bdf132acc5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ken.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ac9be5b2-7d7d-45e2-ae6e-209371b3b126",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const user_id = parseInt(pm.collectionVariables.get(\"id\"));\r",
+									"console.log(user_id)\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"pm.test(\"Response should be an object\", ()=> {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"\r",
+									"})\r",
+									"pm.test(\"Response should not be empty\", () => {\r",
+									"    pm.expect(jsonData.data).to.not.be.empty;\r",
+									"})\r",
+									"pm.test(\"Data should be a object\", ()=> {\r",
+									"    pm.expect(jsonData.data).to.be.an(\"object\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check the User id\", ()=>{\r",
+									"    pm.expect(jsonData.data).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData.data.id).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.data.id).to.equal(user_id);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data should have email that is a string\", () => {\r",
+									"    pm.expect(jsonData.data).to.have.property(\"email\");\r",
+									"    pm.expect(jsonData.data.email).to.be.a(\"string\");\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"Data should have last_name that is a string\", () => {\r",
+									"    pm.expect(jsonData.data).to.have.property(\"last_name\");\r",
+									"    pm.expect(jsonData.data.last_name).to.be.a(\"string\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data should have avatar that is a string\", () => {\r",
+									"    pm.expect(jsonData.data).to.have.property(\"avatar\");\r",
+									"    pm.expect(jsonData.data.avatar).to.be.a(\"string\");\r",
+									"})\r",
+									"pm.test(\"Data should have support\", () => {\r",
+									"    pm.expect(jsonData.support).to.not.be.empty;\r",
+									"    pm.expect(jsonData.support).to.be.an(\"object\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "012b63f5-53f7-4812-96db-2ed9b03caa14",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/users/{{id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(full)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const req = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\");\r",
+									"    pm.expect(jsonData).to.have.property(\"job\");\r",
+									"    pm.expect(jsonData).to.have.property(\"updatedAt\");\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.job).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.updatedAt).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the user update logic\", () => {\r",
+									"    pm.expect(jsonData.name).to.equal(req.name);\r",
+									"    pm.expect(jsonData.job).to.equal(req.job);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "fccec3f5-e43c-4d79-ad10-45ee89d86d1b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"morp\",\r\n    \"job\": \"zion reside\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(partial)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const req = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\");\r",
+									"    pm.expect(jsonData).to.have.property(\"job\");\r",
+									"    pm.expect(jsonData).to.have.property(\"updatedAt\");\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.job).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.updatedAt).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the user update logic\", () => {\r",
+									"    pm.expect(jsonData.name).to.equal(req.name);\r",
+									"    pm.expect(jsonData.job).to.equal(req.job);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "4610b946-0004-4c63-a753-592849aed43a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ken\",\r\n    \"job\": \"Tester\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									"pm.test(\"Status code is 204\", ()=> {\r",
+									"    pm.response.to.have.status(204);\r",
+									"})\r",
+									"pm.test(\"Status message is No Content\", ()=> {\r",
+									"    pm.response.to.have.status(\"No Content\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "db01cde1-dea9-4de6-aa04-9c879178e5cd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				}
+			],
+			"id": "f77987c5-dcf2-498b-8216-f99aa3b1a8b2"
+		},
+		{
+			"name": "Missing Authentication",
+			"item": [
+				{
+					"name": "Register User - Missing header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "9b05620d-2162-4035-982c-36d76ab43083",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a User - Missing header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "bf871d0d-3b2d-4921-87b9-d5aae434dca5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ken.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(full) - Missing header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "98f5cc73-794f-4304-b9f6-2390c915771b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"morp\",\r\n    \"job\": \"zion reside\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(partial) - Missing header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "f16e9eec-db15-4078-8603-b02a76df5e82",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ken\",\r\n    \"job\": \"Tester\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User - Missing header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "97f360b7-b785-42f0-b140-2d7db943cc1d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				}
+			],
+			"id": "f9e942f4-f1d7-4d73-89b9-273564aa5ce1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "93b25cc3-8306-4c7a-bb31-6ffb46047987",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "810c4cde-83eb-412b-825e-737b2910dcd3",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 401\", ()=> {\r",
+							"    pm.response.to.have.status(401);\r",
+							"})\r",
+							"pm.test(\"Status message is Unauthorized\", ()=> {\r",
+							"    pm.response.to.have.status(\"Unauthorized\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate error message\", () => {\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"    pm.expect(jsonData).to.have.property(\"error\");\r",
+							"    pm.expect(jsonData.error).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.error).to.equal(\"Missing API key\");\r",
+							"});\r",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Invalid key",
+			"item": [
+				{
+					"name": "Register User - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "bb376dc3-bc7a-4a6d-960f-7a2beae4ebf8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a User - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "c2c0eac1-4d77-4bc3-a769-39e5282f4782",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ken.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(full) - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "07b342cc-7761-4762-9830-3f8d42aa7d47",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"morp\",\r\n    \"job\": \"zion reside\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(partial) - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "13762241-c5aa-4347-a823-c72999b88700",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ken\",\r\n    \"job\": \"Tester\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "8fda134f-0007-4ddf-b119-15e46ff54a89",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				}
+			],
+			"id": "21d8d4b3-ea2f-4e7a-ac1d-6893bcdf1907",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "702f362a-6cf1-42d7-bd82-71d07ad8bddc",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e26e1575-0aa5-4376-ba00-054bff473a2e",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 403\", ()=> {\r",
+							"    pm.response.to.have.status(403);\r",
+							"})\r",
+							"pm.test(\"Status message is Forbidden\", ()=> {\r",
+							"    pm.response.to.have.status(\"Forbidden\");\r",
+							"});\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"pm.test(\"Validate error message\", () => {\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"    pm.expect(jsonData).to.have.property(\"error\");\r",
+							"    pm.expect(jsonData.error).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.error).to.equal(\"Invalid or inactive API key\");\r",
+							"});\r",
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "4d5f14a5-d2c3-4e55-8d6e-84445e64684e",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "8c78bf8a-b09e-43ae-90f5-96234d697fca",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": ""
+		},
+		{
+			"key": "key",
+			"value": ""
+		},
+		{
+			"key": "page_number",
+			"value": ""
+		},
+		{
+			"key": "per_page",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "new_id",
+			"value": ""
+		},
+		{
+			"key": "invalid_key",
+			"value": ""
+		},
+		{
+			"key": "registered_Id",
+			"value": ""
+		},
+		{
+			"key": "registered_Token",
+			"value": ""
+		}
+	]
+}
