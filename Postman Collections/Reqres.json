@@ -966,7 +966,7 @@
 			]
 		},
 		{
-			"name": "Invalid key Copy",
+			"name": "Missing Password",
 			"item": [
 				{
 					"name": "Register User - Invalid key",
@@ -992,7 +992,7 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{invalid_key}}",
+								"value": "{{key}}",
 								"type": "text"
 							}
 						],
@@ -1006,47 +1006,6 @@
 							}
 						},
 						"url": "{{base_url}}/register"
-					},
-					"response": []
-				},
-				{
-					"name": "Create a User - Invalid key",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"id": "19343526-fe59-4f8e-826f-1b22d3310365",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{invalid_key}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"ken.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}/users"
 					},
 					"response": []
 				},
