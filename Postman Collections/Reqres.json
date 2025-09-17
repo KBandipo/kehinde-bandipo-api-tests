@@ -400,6 +400,73 @@
 					"response": []
 				},
 				{
+					"name": "Update User(full) Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const req = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\");\r",
+									"    pm.expect(jsonData).to.have.property(\"job\");\r",
+									"    pm.expect(jsonData).to.have.property(\"updatedAt\");\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.job).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.updatedAt).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the user update logic\", () => {\r",
+									"    pm.expect(jsonData.name).to.equal(req.name);\r",
+									"    pm.expect(jsonData.job).to.equal(req.job);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "5f547baf-7429-46f7-ae81-2bcb2f02d733",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"morp\",\r\n    \"job\": \"zion reside\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
 					"name": "Update User(partial)",
 					"event": [
 						{
