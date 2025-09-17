@@ -1026,7 +1026,7 @@
 					"response": []
 				},
 				{
-					"name": "Register User - Missing Password Copy",
+					"name": "Register User - Missing Email",
 					"event": [
 						{
 							"listen": "test",
@@ -1047,7 +1047,7 @@
 									"    pm.expect(jsonData).to.be.an(\"object\");\r",
 									"    pm.expect(jsonData).to.have.property(\"error\");\r",
 									"    pm.expect(jsonData.error).to.be.a(\"string\");\r",
-									"    pm.expect(jsonData.error).to.equal(\"Missing password\");\r",
+									"    pm.expect(jsonData.error).to.equal(\"Missing email or username\");\r",
 									"});\r",
 									""
 								],
@@ -1071,7 +1071,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\"\r\n}\r\n",
+							"raw": "{\r\n    \"password\": \"pistol\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
