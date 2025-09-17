@@ -966,7 +966,7 @@
 			]
 		},
 		{
-			"name": "Missing input",
+			"name": "Missing Field",
 			"item": [
 				{
 					"name": "Register User - Missing Password",
