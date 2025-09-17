@@ -966,7 +966,7 @@
 			]
 		},
 		{
-			"name": "Missing Password",
+			"name": "Missing input",
 			"item": [
 				{
 					"name": "Register User - Missing Password",
@@ -1000,6 +1000,63 @@
 						}
 					],
 					"id": "e2dc29fa-e89d-4ae5-9af9-3e3c46512713",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Register User - Missing Password Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 400\", ()=> {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"pm.test(\"Status message is Bad Request\", ()=> {\r",
+									"    pm.response.to.have.status(\"Bad Request\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
+									"});\r",
+									"pm.test(\"Validate error message\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"error\");\r",
+									"    pm.expect(jsonData.error).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.error).to.equal(\"Missing password\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b06c5db8-2d18-4306-a3da-1fdd530646b1",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
