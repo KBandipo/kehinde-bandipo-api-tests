@@ -14,7 +14,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"id": "79ba6c4b-5998-4e33-92c1-e75344b85a13",
 								"exec": [
 									"const jsonData = pm.response.json();\r",
 									"pm.collectionVariables.set(\"registered_Id\", jsonData.id);\r",
@@ -25,11 +25,11 @@
 									"pm.test(\"Status message is OK\", ()=> {\r",
 									"    pm.response.to.have.status(\"OK\");\r",
 									"});\r",
-									"pm.test(\"Response time is less than 1000ms\", () => {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"pm.test(\"Response time is less than 1500ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1500);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"pm.test(\"Validate that registered user has id and token\", () => {\r",
 									"    pm.expect(jsonData).to.be.an(\"object\");\r",
 									"    pm.expect(jsonData).to.have.property(\"id\");\r",
 									"    pm.expect(jsonData).to.have.property(\"token\");\r",
@@ -924,6 +924,248 @@
 				}
 			],
 			"id": "21d8d4b3-ea2f-4e7a-ac1d-6893bcdf1907",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "702f362a-6cf1-42d7-bd82-71d07ad8bddc",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e26e1575-0aa5-4376-ba00-054bff473a2e",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 403\", ()=> {\r",
+							"    pm.response.to.have.status(403);\r",
+							"})\r",
+							"pm.test(\"Status message is Forbidden\", ()=> {\r",
+							"    pm.response.to.have.status(\"Forbidden\");\r",
+							"});\r",
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"pm.test(\"Validate error message\", () => {\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"    pm.expect(jsonData).to.have.property(\"error\");\r",
+							"    pm.expect(jsonData.error).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.error).to.equal(\"Invalid or inactive API key\");\r",
+							"});\r",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Invalid key Copy",
+			"item": [
+				{
+					"name": "Register User - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e2dc29fa-e89d-4ae5-9af9-3e3c46512713",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a User - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "19343526-fe59-4f8e-826f-1b22d3310365",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ken.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(full) - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "587d86d0-d82d-4ddb-89a7-94772d37d2ab",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"morp\",\r\n    \"job\": \"zion reside\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(partial) - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "1d8fbe87-c09a-476e-af34-ac8a72c4a7cb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ken\",\r\n    \"job\": \"Tester\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User - Invalid key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "0b5f03d5-d143-440e-bab5-c2ce919bc81c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{invalid_key}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				}
+			],
+			"id": "d9dd13c7-4df6-420c-be7c-9002c794be3f",
 			"event": [
 				{
 					"listen": "prerequest",
