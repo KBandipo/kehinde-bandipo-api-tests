@@ -253,84 +253,6 @@
 					"response": []
 				},
 				{
-					"name": "Create a User Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
-								"exec": [
-									"const jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"new_id\", jsonData.id);\r",
-									"const req = JSON.parse(pm.request.body.raw);\r",
-									"\r",
-									"pm.test(\"Status code is 201\", ()=> {\r",
-									"    pm.response.to.have.status(201);\r",
-									"})\r",
-									"pm.test(\"Status message is Created\", ()=> {\r",
-									"    pm.response.to.have.status(\"Created\");\r",
-									"});\r",
-									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
-									"});\r",
-									"pm.test(\"Response should be an object\", ()=> {\r",
-									"    pm.expect(jsonData).to.be.an(\"object\");\r",
-									"\r",
-									"})\r",
-									"pm.test(\"Response should not be empty\", () => {\r",
-									"    pm.expect(jsonData).to.not.be.empty;\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
-									"    pm.expect(jsonData).to.have.property(\"email\");\r",
-									"    pm.expect(jsonData).to.have.property(\"password\");\r",
-									"    pm.expect(jsonData).to.have.property(\"id\");\r",
-									"    pm.expect(jsonData).to.have.property(\"createdAt\");\r",
-									"    pm.expect(jsonData.email).to.be.a(\"string\");\r",
-									"    pm.expect(jsonData.password).to.be.a(\"string\");\r",
-									"    pm.expect(jsonData.id).to.be.a(\"string\");\r",
-									"    pm.expect(jsonData.createdAt).to.be.a(\"string\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Validate the user creation logic\", () => {\r",
-									"    pm.expect(jsonData.email).to.equal(req.email);\r",
-									"    pm.expect(jsonData.password).to.equal(req.password);\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"id": "665af6c9-8ef5-430e-b07e-baaad88aefc6",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{key}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"ken.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}/users"
-					},
-					"response": []
-				},
-				{
 					"name": "Single User",
 					"event": [
 						{
@@ -1186,6 +1108,512 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Happy  path Copy",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79ba6c4b-5998-4e33-92c1-e75344b85a13",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"registered_Id\", jsonData.id);\r",
+									"pm.collectionVariables.set(\"registered_Token\", jsonData.token);\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2500ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate that registered user has id and token\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"token\");\r",
+									"    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.token).to.be.a(\"string\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "696eedb7-5fd4-4209-bada-199a67e116ff",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/register"
+					},
+					"response": []
+				},
+				{
+					"name": "List Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "be84b475-3cab-467a-bb44-d09f96d3f119",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const page_number = parseInt(pm.collectionVariables.get(\"page_number\"));\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"pm.test(\"Response should be an object\", ()=> {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Page number is correct\", ()=> {\r",
+									"    pm.expect(jsonData.page).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.page).to.eql(page_number);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Per_page should be a number\", ()=> {\r",
+									"    pm.expect(jsonData.per_page).to.be.a(\"number\");\r",
+									"})\r",
+									"pm.test(\"Total should be a number\", () => {\r",
+									"    pm.expect(jsonData.total).to.be.a(\"number\");\r",
+									"});\r",
+									"pm.test(\"Total_pages should be a number\", () => {\r",
+									"    pm.expect(jsonData.total_pages).to.be.a(\"number\");\r",
+									"});\r",
+									"pm.test(\"Data should be an array\", () => {\r",
+									"    pm.expect(jsonData.data).to.be.an(\"array\");\r",
+									"});\r",
+									"pm.test(\"Response should have data\", () => {\r",
+									"    pm.expect(jsonData.data).to.not.be.empty;\r",
+									"})\r",
+									"pm.test(\"Data should be a object\", ()=> {\r",
+									"    pm.expect(jsonData.data[0]).to.be.an(\"object\");\r",
+									"})\r",
+									"pm.test(\"Data should have id, email, first_name, last_name, avatar\", () => {\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"email\");\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"first_name\");\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"last_name\");\r",
+									"    pm.expect(jsonData.data[0]).to.have.property(\"avatar\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data id, email, first_name, last_name, avatar should have correct data types\", () => {\r",
+									"    pm.expect(jsonData.data[0].id).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.data[0].email).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].first_name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].last_name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.data[0].avatar).to.be.a(\"string\");\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "a1b8cf11-e2b7-44bb-82e4-c8e157babea0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users?page={{page_number}}&per_page=6",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "{{page_number}}"
+								},
+								{
+									"key": "per_page",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27be2660-04fb-428f-aa6d-46dd1623b472",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"new_id\", jsonData.id);\r",
+									"const req = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", ()=> {\r",
+									"    pm.response.to.have.status(201);\r",
+									"})\r",
+									"pm.test(\"Status message is Created\", ()=> {\r",
+									"    pm.response.to.have.status(\"Created\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"pm.test(\"Response should be an object\", ()=> {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"\r",
+									"})\r",
+									"pm.test(\"Response should not be empty\", () => {\r",
+									"    pm.expect(jsonData).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"    pm.expect(jsonData).to.have.property(\"email\");\r",
+									"    pm.expect(jsonData).to.have.property(\"password\");\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"createdAt\");\r",
+									"    pm.expect(jsonData.email).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.password).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.id).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.createdAt).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the user creation logic\", () => {\r",
+									"    pm.expect(jsonData.email).to.equal(req.email);\r",
+									"    pm.expect(jsonData.password).to.equal(req.password);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e14ad306-450a-427b-b109-dddf762e579d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ken.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ac9be5b2-7d7d-45e2-ae6e-209371b3b126",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const user_id = parseInt(pm.collectionVariables.get(\"id\"));\r",
+									"console.log(user_id)\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"pm.test(\"Response should be an object\", ()=> {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"\r",
+									"})\r",
+									"pm.test(\"Response should not be empty\", () => {\r",
+									"    pm.expect(jsonData.data).to.not.be.empty;\r",
+									"})\r",
+									"pm.test(\"Data should be a object\", ()=> {\r",
+									"    pm.expect(jsonData.data).to.be.an(\"object\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check the User id\", ()=>{\r",
+									"    pm.expect(jsonData.data).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData.data.id).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.data.id).to.equal(user_id);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data should have email that is a string\", () => {\r",
+									"    pm.expect(jsonData.data).to.have.property(\"email\");\r",
+									"    pm.expect(jsonData.data.email).to.be.a(\"string\");\r",
+									"})\r",
+									"\r",
+									"\r",
+									"pm.test(\"Data should have last_name that is a string\", () => {\r",
+									"    pm.expect(jsonData.data).to.have.property(\"last_name\");\r",
+									"    pm.expect(jsonData.data.last_name).to.be.a(\"string\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Data should have avatar that is a string\", () => {\r",
+									"    pm.expect(jsonData.data).to.have.property(\"avatar\");\r",
+									"    pm.expect(jsonData.data.avatar).to.be.a(\"string\");\r",
+									"})\r",
+									"pm.test(\"Data should have support\", () => {\r",
+									"    pm.expect(jsonData.support).to.not.be.empty;\r",
+									"    pm.expect(jsonData.support).to.be.an(\"object\");\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b08c94d3-9361-46f1-9f07-4a634b38c411",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/users/{{id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(full)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const req = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\");\r",
+									"    pm.expect(jsonData).to.have.property(\"job\");\r",
+									"    pm.expect(jsonData).to.have.property(\"updatedAt\");\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.job).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.updatedAt).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the user update logic\", () => {\r",
+									"    pm.expect(jsonData.name).to.equal(req.name);\r",
+									"    pm.expect(jsonData.job).to.equal(req.job);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e0a7378b-b43e-40d0-afe9-663fc3491928",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"morp\",\r\n    \"job\": \"zion reside\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User(partial)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"const req = JSON.parse(pm.request.body.raw);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response properties and their datatypes\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\");\r",
+									"    pm.expect(jsonData).to.have.property(\"job\");\r",
+									"    pm.expect(jsonData).to.have.property(\"updatedAt\");\r",
+									"    pm.expect(jsonData.name).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.job).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.updatedAt).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the user update logic\", () => {\r",
+									"    pm.expect(jsonData.name).to.equal(req.name);\r",
+									"    pm.expect(jsonData.job).to.equal(req.job);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "64a821eb-8d38-4799-9f70-ccd11317c8b0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ken\",\r\n    \"job\": \"Tester\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79c7ea22-077a-49c4-89a3-3644cf558844",
+								"exec": [
+									"pm.test(\"Status code is 204\", ()=> {\r",
+									"    pm.response.to.have.status(204);\r",
+									"})\r",
+									"pm.test(\"Status message is No Content\", ()=> {\r",
+									"    pm.response.to.have.status(\"No Content\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", ()=> {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "4c8cde66-0cee-447c-bcd6-f9bb348ad820",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/users/{{new_id}}"
+					},
+					"response": []
+				}
+			],
+			"id": "1cfb657d-1d22-46c5-a166-f8352347a1e1"
 		}
 	],
 	"event": [
