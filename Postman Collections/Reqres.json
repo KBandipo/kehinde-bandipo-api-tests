@@ -69,6 +69,66 @@
 					"response": []
 				},
 				{
+					"name": "Register User Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79ba6c4b-5998-4e33-92c1-e75344b85a13",
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"registered_Id\", jsonData.id);\r",
+									"pm.collectionVariables.set(\"registered_Token\", jsonData.token);\r",
+									"pm.test(\"Status code is 200\", ()=> {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.test(\"Status message is OK\", ()=> {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2500ms\", () => {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate that registered user has id and token\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"token\");\r",
+									"    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.token).to.be.a(\"string\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b11a3961-9857-4b56-a569-57e212c949f8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/register"
+					},
+					"response": []
+				},
+				{
 					"name": "List Users",
 					"event": [
 						{
