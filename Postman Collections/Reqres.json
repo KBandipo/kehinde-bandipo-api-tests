@@ -1110,7 +1110,7 @@
 			]
 		},
 		{
-			"name": "Happy  path Copy",
+			"name": "Empty body",
 			"item": [
 				{
 					"name": "Register User",
