@@ -184,6 +184,7 @@
 								"exec": [
 									"const jsonData = pm.response.json();\r",
 									"const page_number = parseInt(pm.collectionVariables.get(\"page_number\"));\r",
+									"const per_page = parseInt(pm.collectionVariables.get(\"per_page\"));\r",
 									"\r",
 									"pm.test(\"Status code is 200\", ()=> {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -259,7 +260,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/users?page={{page_number}}&per_page=6",
+							"raw": "{{base_url}}/users?page={{page_number}}&per_page={{per_page}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -273,7 +274,7 @@
 								},
 								{
 									"key": "per_page",
-									"value": "6"
+									"value": "{{per_page}}"
 								}
 							]
 						}
