@@ -18,7 +18,7 @@
 								"exec": [
 									"const jsonData = pm.response.json();\r",
 									"pm.collectionVariables.set(\"registered_Id\", jsonData.id);\r",
-									"pm.collectionVariables.set(\"registered_Token\", jsonData.token);\r",
+									"console.log(pm.collectionVariables.set(\"registered_Token\", jsonData.token));\r",
 									"pm.test(\"Status code is 200\", ()=> {\r",
 									"    pm.response.to.have.status(200);\r",
 									"})\r",
